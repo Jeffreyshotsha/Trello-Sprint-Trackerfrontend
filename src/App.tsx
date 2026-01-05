@@ -56,7 +56,7 @@ export default function App() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`http://localhost:4000/api/report/${boardId}`);
+        const res = await fetch(`https://trello-sprint-trackerbackend.onrender.com/api/report/${boardId}`);
         if (!res.ok) throw new Error("Failed to load data");
         const json = await res.json();
         if (!json.success) throw new Error(json.error || "API error");
