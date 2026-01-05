@@ -1,20 +1,40 @@
 // src/App.tsx
 import { useState, useEffect } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
-import StoryPointsPage from "./pages/StoryPointsPage.tsx";
-import BurndownPage from "./pages/BurndownPage.tsx";
-import SprintHistoryPage from "./pages/SprintHistoryPage.tsx";
-import AboutPage from "./pages/AboutPage.tsx";
+import StoryPointsPage from "./pages/StoryPointsPage";
+import BurndownPage from "./pages/BurndownPage";
+import SprintHistoryPage from "./pages/SprintHistoryPage";
+import AboutPage from "./pages/AboutPage";
 import { Home, BarChart3, History, Info, X } from "lucide-react";
 
 interface ReportData {
   success: boolean;
-  totals: { "TO DO": number; "DOING": number; "DONE": number; "NOT DONE": number };
-  members: Array<{ id: string; name: string; "TO DO": number; "DOING": number; "DONE": number; "NOT DONE": number }>;
+  totals: {
+    "TO DO": number;
+    "DOING": number;
+    "DONE": number;
+    "NOT DONE": number;
+  };
+  members: Array<{
+    id: string;
+    name: string;
+    "TO DO": number;
+    "DOING": number;
+    "DONE": number;
+    "NOT DONE": number;
+  }>;
   burndown: Array<{ date: string; remaining: number }>;
 }
 
-function NavTab({ to, icon: Icon, label }: { to: string; icon: any; label: string }) {
+function NavTab({
+  to,
+  icon: Icon,
+  label,
+}: {
+  to: string;
+  icon: any;
+  label: string;
+}) {
   const location = useLocation();
   const isActive = location.pathname === to;
 
@@ -34,14 +54,13 @@ function NavTab({ to, icon: Icon, label }: { to: string; icon: any; label: strin
 }
 
 export default function App() {
-  // Load saved Board ID from localStorage on first render
   const savedBoardId = localStorage.getItem("trelloBoardId") || "";
+
   const [boardId, setBoardId] = useState(savedBoardId);
   const [data, setData] = useState<ReportData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Auto-load data when boardId is present (including on refresh)
   useEffect(() => {
     if (!boardId.trim()) {
       setData(null);
@@ -49,17 +68,25 @@ export default function App() {
       return;
     }
 
-    // Save to localStorage whenever boardId changes
     localStorage.setItem("trelloBoardId", boardId);
 
     const fetchData = async () => {
       setLoading(true);
       setError(null);
+
       try {
-        const res = await fetch(`https://trello-sprint-trackerbackend.onrender.com/api/report/${boardId}`);
+        const res = await fetch(
+          `https://trello-sprint-trackerbackend.onrender.com/api/report/${boardId}`
+        );
+
         if (!res.ok) throw new Error("Failed to load data");
+
         const json = await res.json();
-        if (!json.success) throw new Error(json.error || "API error");
+
+        if (!json.success) {
+          throw new Error(json.error || "API error");
+        }
+
         setData(json);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Network error");
@@ -72,7 +99,6 @@ export default function App() {
     fetchData();
   }, [boardId]);
 
-  // Clear saved Board ID
   const clearBoardId = () => {
     localStorage.removeItem("trelloBoardId");
     setBoardId("");
@@ -80,11 +106,17 @@ export default function App() {
     setError(null);
   };
 
+  const DataPlaceholder = ({ text }: { text: string }) => (
+    <div className="text-center py-20 text-gray-600 text-xl">{text}</div>
+  );
+
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="bg-white shadow-lg sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <h1 className="text-3xl font-bold text-indigo-600">Trello Sprint Tracker</h1>
+          <h1 className="text-3xl font-bold text-indigo-600">
+            Trello Sprint Tracker
+          </h1>
 
           <div className="flex gap-4 items-center">
             <input
@@ -94,6 +126,7 @@ export default function App() {
               placeholder="Enter Board ID (e.g. o4TJRCtx)"
               className="px-6 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 text-lg w-80"
             />
+
             {boardId && (
               <button
                 onClick={clearBoardId}
@@ -117,7 +150,7 @@ export default function App() {
       <main className="max-w-7xl mx-auto px-6 py-10">
         {loading && (
           <div className="text-center py-20">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-indigo-600"></div>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-indigo-600" />
             <p className="mt-4 text-xl">Loading data from Trello...</p>
           </div>
         )}
@@ -128,25 +161,42 @@ export default function App() {
           </div>
         )}
 
-        {/* About is always visible */}
         <Routes>
+          <Route
+            path="/"
+            element={
+              data ? (
+                <StoryPointsPage data={data} />
+              ) : (
+                <DataPlaceholder text="Enter a Board ID to view Story Points" />
+              )
+            }
+          />
+
+          <Route
+            path="/burndown"
+            element={
+              data ? (
+                <BurndownPage data={data} />
+              ) : (
+                <DataPlaceholder text="Load a board to view Burndown" />
+              )
+            }
+          />
+
+          <Route
+            path="/history"
+            element={
+              data ? (
+                <SprintHistoryPage data={data} />
+              ) : (
+                <DataPlaceholder text="Load a board to view Sprint History" />
+              )
+            }
+          />
+
           <Route path="/about" element={<AboutPage />} />
         </Routes>
-
-        {/* Data-dependent pages */}
-        {data && (
-          <Routes>
-            <Route path="/" element={<StoryPointsPage data={data} />} />
-            <Route path="/burndown" element={<BurndownPage data={data} />} />
-            <Route path="/history" element={<SprintHistoryPage data={data} />} />
-          </Routes>
-        )}
-
-        {!loading && !error && !data && boardId && (
-          <div className="text-center py-20">
-            <p className="text-xl text-gray-600">No data loaded yet. Check Board ID or backend.</p>
-          </div>
-        )}
       </main>
     </div>
   );
