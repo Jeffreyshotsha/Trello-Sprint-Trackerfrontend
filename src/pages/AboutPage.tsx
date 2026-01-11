@@ -1,11 +1,13 @@
 // src/pages/AboutPage.tsx
+import { Heart } from "lucide-react";
+
 export default function AboutPage() {
   return (
     <main className="max-w-5xl mx-auto px-6 py-10">
-      {/* Main Story - Text Only (No Image) */}
+      {/* Story - Text Only */}
       <div className="bg-white rounded-3xl shadow-2xl p-10 mb-16">
         <h2 className="text-4xl font-bold text-indigo-700 mb-8 flex items-center gap-4">
-          
+          <Heart className="text-red-500 w-12 h-12" fill="currentColor" />
           Back to the Inception of Trello Sprint Tracker
         </h2>
 
@@ -53,13 +55,13 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Three Equal Cards - Founders & Supporters */}
+      {/* Three Equal Cards */}
       <div className="grid md:grid-cols-3 gap-8">
         {/* Sash-lee */}
         <div className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center">
           <div className="w-52 h-52 rounded-full overflow-hidden border-4 border-indigo-200 mb-6">
             <img
-              src="/src/assets/sash.jpeg"
+              src="/assets/sash.jpeg"
               alt="Sash-lee Enslin"
               className="w-full h-full object-cover"
             />
@@ -76,24 +78,24 @@ export default function AboutPage() {
         <div className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center">
           <div className="w-52 h-52 rounded-full overflow-hidden border-4 border-indigo-200 mb-6">
             <img
-              src="/src/assets/thabo.jpeg"
+              src="/assets/thabo.jpeg"
               alt="Thabo Leroy Ndamane"
               className="w-full h-full object-cover"
             />
           </div>
           <h4 className="text-2xl font-bold text-indigo-700 mb-2">Thabo Leroy Ndamane</h4>
-          <p className="text-gray-600 font-medium">One of the Scrum Master – Media Department</p>
+          <p className="text-gray-600 font-medium">Scrum Master – Media Department</p>
           <p className="text-indigo-600 font-medium mb-4">Board Member – Preach Closet</p>
           <p className="text-gray-700 leading-relaxed">
             His steady support and practical wisdom were the push I needed most.
           </p>
         </div>
 
-        {/* Austin */}
+        {/* Jeff */}
         <div className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center">
           <div className="w-52 h-52 rounded-full overflow-hidden border-4 border-indigo-200 mb-6">
             <img
-              src="/src/assets/jeff.jpg"
+              src="/assets/jeff.jpg"
               alt="Jeff - Founder"
               className="w-full h-full object-cover"
             />
@@ -107,7 +109,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Closing Message */}
+      {/* Closing */}
       <div className="text-center mt-16 bg-indigo-50 rounded-2xl p-10 border border-indigo-100">
         <p className="text-2xl font-medium text-indigo-800 mb-6">
           To the whole team:
@@ -119,7 +121,7 @@ export default function AboutPage() {
         </p>
         <p className="mt-8 text-lg font-semibold text-indigo-700">
           With gratitude,  
-          Jeffrey
+          Jeff
         </p>
       </div>
     </main>
