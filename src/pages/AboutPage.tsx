@@ -4,10 +4,9 @@ import { Heart } from "lucide-react";
 export default function AboutPage() {
   return (
     <main className="max-w-5xl mx-auto px-6 py-10">
-      {/* Story - Text Only */}
+      {/* Main Story - Text Only (No Image) */}
       <div className="bg-white rounded-3xl shadow-2xl p-10 mb-16">
         <h2 className="text-4xl font-bold text-indigo-700 mb-8 flex items-center gap-4">
-          <Heart className="text-red-500 w-12 h-12" fill="currentColor" />
           Back to the Inception of Trello Sprint Tracker
         </h2>
 
@@ -55,7 +54,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Three Equal Cards */}
+      {/* Three Equal Cards - Founders & Supporters */}
       <div className="grid md:grid-cols-3 gap-8">
         {/* Sash-lee */}
         <div className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center">
@@ -109,7 +108,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Closing */}
+      {/* Closing Message */}
       <div className="text-center mt-16 bg-indigo-50 rounded-2xl p-10 border border-indigo-100">
         <p className="text-2xl font-medium text-indigo-800 mb-6">
           To the whole team:
